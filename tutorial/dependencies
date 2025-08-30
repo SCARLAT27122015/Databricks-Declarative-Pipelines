@@ -1,0 +1,30 @@
+
+import dlt
+from pyspark.sql.functions import *
+
+#Create an end-to-end basic pipeline
+
+# Staging area
+@dlt.table
+def staging_orders():
+    df = spark.readStream.table('delta_live.source.orders')
+    return df
+
+
+#creating transformed area
+@dlt.view
+def transformed_orders():
+    #This is making reference to the table created in line 7. 
+    df = spark.readStream.table('staging_orders')
+    df = df.withColumn('order_status', lower(col('order_status')))
+
+    return df
+
+#Creating aggregated area
+@dlt.table
+def aggregated_orders():
+    #This is making reference to the table created in line 15. 
+    df = spark.readStream.table('transformed_orders')
+    df = df.groupBy('order_status').count()
+    return df
+
