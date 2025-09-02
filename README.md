@@ -1,17 +1,18 @@
-Project Summary: Building a Data Lakehouse with Databricks Declarative Pipelines (DLT)
+#Project Summary: Building a Data Lakehouse with Databricks Declarative Pipelines (DLT)
+
 This project demonstrates how to build an end-to-end data pipeline using Databricks Declarative Pipelines, following the best practices of a medallion architecture to process data in distinct layers.
 
-1. Bronze Layer: Raw Data Ingestion
+* 1. Bronze Layer: Raw Data Ingestion
 The Bronze layer is the entry point for all raw data. The goal is to ingest data efficiently while maintaining its original format and structure.
 
-Code Pattern: Uses dlt.create_streaming_table and @dlt.append_flow.
+** Code Pattern: ** Uses dlt.create_streaming_table and @dlt.append_flow.
 
-Purpose: @dlt.append_flow declaratively appends data from multiple sources (e.g., sales_east, sales_west) into a single, unified streaming table (e.g., sales_stg). This simplifies the ingestion of multiple data streams into a single point, which is a common task in modern data architectures.
+** Purpose: ** @dlt.append_flow declaratively appends data from multiple sources (e.g., sales_east, sales_west) into a single, unified streaming table (e.g., sales_stg). This simplifies the ingestion of multiple data streams into a single point, which is a common task in modern data architectures.
 
-2. Silver Layer: Cleansing, Transformation, and CDC
+* 2. Silver Layer: Cleansing, Transformation, and CDC
 The Silver layer takes the raw data from the Bronze layer, applies quality checks and transformations, and manages historical changes. This is where the data becomes a reliable "single source of truth."
 
-Code Pattern: Combines @dlt.view with dlt.create_auto_cdc_flow.
+** Code Pattern: ** Combines @dlt.view with dlt.create_auto_cdc_flow.
 
 Purpose: The @dlt.view encapsulates all transformation logic (e.g., calculating total_amount, casting data types). This separates the business logic from the physical storage, which is a best practice for clean code and data lineage.
 
